@@ -1,0 +1,18 @@
+{
+  "accessories": [
+    {
+      "accessory": "ZafroAC",
+      "name": "Bedroom AC",
+      "host": "zafro.nbrowan.com",
+      "username": "YOUR_MQTT_USERNAME",
+      "password": "YOUR_MQTT_PASSWORD",
+      "sn": "YOUR_DEVICE_SERIAL",
+      "vendor": "I4SEASON",
+      "userTag": "app_YOUR_USER_ID",
+      "windMax": 4,
+      "pollSeconds": 60,
+      "exposeLight": true,
+      "exposeModeSwitches": true
+    }
+  ]
+}

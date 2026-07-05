@@ -1,0 +1,76 @@
+{
+  "pluginAlias": "ZafroAC",
+  "pluginType": "accessory",
+  "singular": false,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "default": "Air Conditioner",
+        "required": true
+      },
+      "host": {
+        "title": "Broker Host",
+        "type": "string",
+        "default": "zafro.nbrowan.com",
+        "required": true
+      },
+      "wsPath": {
+        "title": "WebSocket Path",
+        "type": "string",
+        "default": "/ws/iot1/"
+      },
+      "username": {
+        "title": "MQTT Username",
+        "type": "string",
+        "required": true,
+        "description": "From the app's /iot1/mqtt/userinfo response."
+      },
+      "password": {
+        "title": "MQTT Password",
+        "type": "string",
+        "required": true
+      },
+      "sn": {
+        "title": "Device Serial (SN)",
+        "type": "string",
+        "required": true
+      },
+      "vendor": {
+        "title": "Vendor",
+        "type": "string",
+        "default": "I4SEASON"
+      },
+      "userTag": {
+        "title": "User Tag",
+        "type": "string",
+        "description": "\"app_\" + your numeric user_id, e.g. app_9376.",
+        "required": true
+      },
+      "windMax": {
+        "title": "Max Fan Level",
+        "type": "integer",
+        "default": 4,
+        "minimum": 1,
+        "maximum": 8
+      },
+      "pollSeconds": {
+        "title": "Poll Interval (seconds)",
+        "type": "integer",
+        "default": 60
+      },
+      "exposeLight": {
+        "title": "Expose Panel Light",
+        "type": "boolean",
+        "default": true
+      },
+      "exposeModeSwitches": {
+        "title": "Expose Dry/Fan Mode Switches",
+        "type": "boolean",
+        "default": true
+      }
+    }
+  }
+}

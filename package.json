@@ -1,0 +1,22 @@
+{
+  "name": "homebridge-zafro-ac",
+  "version": "0.1.0",
+  "description": "Homebridge plugin for Zafro / i4season Wi-Fi air conditioners (MQTT over WebSockets).",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "homebridge": ">=1.6.0"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "zafro",
+    "i4season",
+    "air-conditioner",
+    "mqtt",
+    "homekit"
+  ],
+  "dependencies": {
+    "mqtt": "^5.15.1"
+  },
+  "license": "MIT"
+}
