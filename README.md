@@ -168,64 +168,87 @@ Add the accessory to your Homebridge `config.json`:
 
 # MQTT Credentials
 
-The plugin requires MQTT credentials from the official Zafro / i4season application.
+The plugin requires MQTT credentials from the official ZAFRO / i4season application.
 
-Required:
+Required values:
 
-```
-MQTT username
-MQTT password
-Device serial number
-User ID
-```
+- MQTT username
+- MQTT password
+- Device serial number (`sn`)
+- User ID
 
-The plugin uses:
+The plugin uses the User ID to build the `userTag` value:
 
-```
+```text
 userTag = app_<user_id>
 ```
 
 Example:
 
-```
+```text
 app_9376
 ```
 
-These values can be obtained by inspecting the application API traffic.
+## Finding the required values with HTTP Toolkit
 
-Typical endpoints:
+You can extract these values from the official ZAFRO / i4season app using HTTP Toolkit.
 
-```
+1. Install **HTTP Toolkit** on your computer.
+2. Select **Android Device** and display the QR code.
+3. Install the **HTTP Toolkit** companion app from Google Play.
+4. Open the companion app, scan the QR code, and allow the VPN permission.
+5. Open the **ZAFRO** app, sign in, and open your air conditioner.
+
+In HTTP Toolkit, look for:
+
+```text
 GET /iot1/mqtt/userinfo
+```
 
+This request contains:
+
+- MQTT username
+- MQTT password
+- User ID
+
+Then look for:
+
+```text
 GET /iot1/device/list
 ```
+
+This request contains:
+
+- Device serial number (`sn`)
+- Device model
+- Vendor
+
+> **Note**
+> Some Android devices or app versions may prevent HTTPS interception due to certificate pinning. If these requests do not appear, a rooted device or Android emulator may be required.
 
 ---
 
 # Protocol Information
 
-Communication uses:
+The plugin communicates with the cloud service using **MQTT 3.1.1 over WebSockets**.
 
-```
-MQTT 3.1.1 over WebSockets
-```
+**Connection**
 
-Connection:
-
-```
+```text
 wss://<host>:443/ws/iot1/
 ```
 
-Publish topic:
+**Topics**
 
-```
+Publish:
+
+```text
 dev/<vendor>/<sn>/command/request
 ```
 
-Subscribe topic:
+Subscribe:
 
-```
+```text
 dev/<vendor>/<sn>/command/reply
 ```
 
