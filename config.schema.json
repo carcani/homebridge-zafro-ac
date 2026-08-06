@@ -1,21 +1,22 @@
 {
   "pluginAlias": "ZafroAC",
+  "pluginPackage": "homebridge-zafro-ac",
   "pluginType": "accessory",
   "singular": false,
   "schema": {
     "type": "object",
+    "additionalProperties": false,
     "properties": {
       "name": {
         "title": "Name",
         "type": "string",
-        "default": "Air Conditioner",
-        "required": true
+        "default": "Air Conditioner"
       },
       "host": {
         "title": "Broker Host",
         "type": "string",
         "default": "zafro.nbrowan.com",
-        "required": true
+        "description": "MQTT WebSocket broker hostname."
       },
       "wsPath": {
         "title": "WebSocket Path",
@@ -25,18 +26,24 @@
       "username": {
         "title": "MQTT Username",
         "type": "string",
-        "required": true,
         "description": "From the app's /iot1/mqtt/userinfo response."
       },
       "password": {
         "title": "MQTT Password",
         "type": "string",
-        "required": true
+        "formType": "password",
+        "description": "MQTT password from the vendor cloud account."
       },
       "sn": {
         "title": "Device Serial (SN)",
         "type": "string",
-        "required": true
+        "description": "Serial number of the AC device."
+      },
+      "model": {
+        "title": "Device Model",
+        "type": "string",
+        "default": "90045EAC0",
+        "description": "Model identifier shown in HomeKit accessory information."
       },
       "vendor": {
         "title": "Vendor",
@@ -46,20 +53,34 @@
       "userTag": {
         "title": "User Tag",
         "type": "string",
-        "description": "\"app_\" + your numeric user_id, e.g. app_9376.",
-        "required": true
+        "description": "Usually app_<numeric_user_id>, for example app_9376."
       },
       "windMax": {
-        "title": "Max Fan Level",
+        "title": "Maximum Fan Level",
         "type": "integer",
         "default": 4,
         "minimum": 1,
         "maximum": 8
       },
+      "tempMinC": {
+        "title": "Minimum Temperature (°C)",
+        "type": "number",
+        "default": 16,
+        "minimum": 10,
+        "maximum": 30
+      },
+      "tempMaxC": {
+        "title": "Maximum Temperature (°C)",
+        "type": "number",
+        "default": 30,
+        "minimum": 16,
+        "maximum": 40
+      },
       "pollSeconds": {
         "title": "Poll Interval (seconds)",
         "type": "integer",
-        "default": 60
+        "default": 60,
+        "minimum": 10
       },
       "exposeLight": {
         "title": "Expose Panel Light",
@@ -70,7 +91,40 @@
         "title": "Expose Dry/Fan Mode Switches",
         "type": "boolean",
         "default": true
+      },
+      "modeMap": {
+        "title": "Mode Mapping",
+        "type": "object",
+        "properties": {
+          "cool": {
+            "title": "Cool Mode Value",
+            "type": "integer",
+            "default": 1
+          },
+          "dry": {
+            "title": "Dry Mode Value",
+            "type": "integer",
+            "default": 2
+          },
+          "fan": {
+            "title": "Fan Mode Value",
+            "type": "integer",
+            "default": 3
+          }
+        },
+        "default": {
+          "cool": 1,
+          "dry": 2,
+          "fan": 3
+        }
       }
-    }
+    },
+    "required": [
+      "name",
+      "username",
+      "password",
+      "sn",
+      "userTag"
+    ]
   }
 }

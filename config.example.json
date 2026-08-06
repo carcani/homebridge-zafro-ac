@@ -2,17 +2,36 @@
   "accessories": [
     {
       "accessory": "ZafroAC",
+
       "name": "Bedroom AC",
+
       "host": "zafro.nbrowan.com",
+      "wsPath": "/ws/iot1/",
+
       "username": "YOUR_MQTT_USERNAME",
       "password": "YOUR_MQTT_PASSWORD",
+
       "sn": "YOUR_DEVICE_SERIAL",
+      "model": "90045EAC0",
       "vendor": "I4SEASON",
+
       "userTag": "app_YOUR_USER_ID",
+
       "windMax": 4,
+
+      "tempMinC": 16,
+      "tempMaxC": 30,
+
       "pollSeconds": 60,
+
       "exposeLight": true,
-      "exposeModeSwitches": true
+      "exposeModeSwitches": true,
+
+      "modeMap": {
+        "cool": 1,
+        "dry": 2,
+        "fan": 3
+      }
     }
   ]
 }

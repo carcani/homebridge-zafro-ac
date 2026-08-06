@@ -1,22 +1,73 @@
 {
   "name": "homebridge-zafro-ac",
-  "version": "0.1.0",
-  "description": "Homebridge plugin for Zafro / i4season Wi-Fi air conditioners (MQTT over WebSockets).",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for Zafro / i4season Wi-Fi air conditioners using MQTT over WebSockets.",
+
   "main": "index.js",
+
+  "author": {
+    "name": "carcani",
+    "url": "https://github.com/carcani"
+  },
+
+  "contributors": [
+    {
+      "name": "Robby Dzielinski",
+      "url": "https://github.com/rdzielinski"
+    }
+  ],
+
   "engines": {
     "node": ">=18.0.0",
     "homebridge": ">=1.6.0"
   },
+
   "keywords": [
     "homebridge-plugin",
+    "homebridge",
     "zafro",
     "i4season",
     "air-conditioner",
     "mqtt",
-    "homekit"
+    "homekit",
+    "smart-home"
   ],
+
   "dependencies": {
     "mqtt": "^5.15.1"
   },
-  "license": "MIT"
+
+  "peerDependencies": {
+    "homebridge": ">=1.6.0"
+  },
+
+  "files": [
+    "index.js",
+    "config.schema.json",
+    "config.example.json",
+    "README.md",
+    "LICENSE"
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carcani/homebridge-zafro-ac.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/carcani/homebridge-zafro-ac/issues"
+  },
+
+  "homepage": "https://github.com/carcani/homebridge-zafro-ac",
+
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/carcani"
+  },
+
+  "license": "MIT",
+
+  "publishConfig": {
+    "access": "public"
+  }
 }
