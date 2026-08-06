@@ -57,11 +57,12 @@
  *   childlockon   - Child lock state
  *
  * HomeKit services:
- *   - HeaterCooler (main AC control)
- *   - Humidity sensor
- *   - Panel light
- *   - Dry mode switch
- *   - Fan mode switch
+ * - HeaterCooler (main AC control)
+ * - Humidity sensor
+ * - Panel light
+ * - Dry mode switch
+ * - Fan mode switch
+ * - Child lock switch
  * ------------------------------------------------------------------
  */
 
@@ -97,7 +98,9 @@ class ZafroAC {
     this.userTag = config.userTag || 'app_0';
 
     if (!this.username || !this.password || !this.sn || !this.userTag) {
-      throw new Error('ZafroAC requires username, password and sn');
+      throw new Error(
+		  'ZafroAC requires username, password, sn and userTag'
+		);
     }
 
     this.uuid = api.hap.uuid.generate(this.sn);
@@ -115,6 +118,8 @@ class ZafroAC {
 
     this.exposeLight = config.exposeLight !== false;
     this.exposeModeSwitches = config.exposeModeSwitches !== false;
+
+    this.exposeChildLock = config.exposeChildLock !== false;
 
     this.state = {
       poweron: false,
@@ -438,25 +443,6 @@ class ZafroAC {
       );
 
     hc.getCharacteristic(
-      Characteristic.LockPhysicalControls
-    )
-      .onGet(() =>
-        this.state.childlockon ? 1 : 0
-      )
-      .onSet(v =>
-        this._setState({
-          childlockon: !!v
-        })
-      );
-
-    hc.getCharacteristic(
-      Characteristic.CurrentRelativeHumidity
-    )
-      .onGet(() =>
-        this.state.rh
-      );
-
-    hc.getCharacteristic(
       Characteristic.TemperatureDisplayUnits
     )
       .onGet(() =>
@@ -468,9 +454,10 @@ class ZafroAC {
     // Humidity sensor
 
     this.humidity =
-      new Service.HumiditySensor(
-        `${this.name} Humidity Sensor`
-      );
+	  new Service.HumiditySensor(
+	    `${this.name} Humidity Sensor`,
+	    this.api.hap.uuid.generate(this.sn + '-humidity')
+	  );
 
     this.humidity
       .getCharacteristic(
@@ -487,9 +474,10 @@ class ZafroAC {
     if (this.exposeLight) {
 
       this.light =
-        new Service.Lightbulb(
-          `${this.name} Light`
-        );
+		  new Service.Lightbulb(
+		    `${this.name} Light`,
+		    this.api.hap.uuid.generate(this.sn + '-light')
+		  );
 
       this.light
         .getCharacteristic(
@@ -513,10 +501,10 @@ class ZafroAC {
     if (this.exposeModeSwitches) {
 
       this.drySwitch =
-        new Service.Switch(
-          `${this.name} Dry Mode`,
-          'dry'
-        );
+		  new Service.Switch(
+		    `${this.name} Dry Mode`,
+		    this.api.hap.uuid.generate(this.sn + '-dry')
+		  );
 
       this.drySwitch
         .getCharacteristic(
@@ -536,10 +524,10 @@ class ZafroAC {
       this.services.push(this.drySwitch);
 
       this.fanSwitch =
-        new Service.Switch(
-          `${this.name} Fan Only`,
-          'fan'
-        );
+		  new Service.Switch(
+		    `${this.name} Fan Only`,
+		    this.api.hap.uuid.generate(this.sn + '-fan')
+		  );
 
       this.fanSwitch
         .getCharacteristic(
@@ -559,6 +547,33 @@ class ZafroAC {
       this.services.push(this.fanSwitch);
 
     }
+
+    // Child lock switch
+
+	if (this.exposeChildLock) {
+
+	  this.childLockSwitch =
+		  new Service.Switch(
+		    `${this.name} Child Lock`,
+		    this.api.hap.uuid.generate(this.sn + '-childlock')
+		  );
+
+	  this.childLockSwitch
+	    .getCharacteristic(
+	      Characteristic.On
+	    )
+	    .onGet(() =>
+	      !!this.state.childlockon
+	    )
+	    .onSet(v =>
+	      this._setState({
+	        childlockon: !!v
+	      })
+	    );
+
+	  this.services.push(this.childLockSwitch);
+
+	}
 
   }
 
@@ -614,17 +629,6 @@ class ZafroAC {
       (this.state.windlevel / this.windMax) * 100
     );
 
-
-    this.hc.updateCharacteristic(
-      C.LockPhysicalControls,
-      this.state.childlockon ? 1 : 0
-    );
-
-    this.hc.updateCharacteristic(
-      C.CurrentRelativeHumidity,
-      this.state.rh
-    );
-
     if (this.humidity) {
 
       this.humidity.updateCharacteristic(
@@ -660,6 +664,15 @@ class ZafroAC {
       );
 
     }
+
+    if (this.childLockSwitch) {
+
+	  this.childLockSwitch.updateCharacteristic(
+	    C.On,
+	    !!this.state.childlockon
+	  );
+
+	}
 
   }
 
